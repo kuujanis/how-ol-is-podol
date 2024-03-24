@@ -1,4 +1,4 @@
-import { useState, useCallback, useMemo } from 'react';
+import { useState, useCallback, useMemo, useRef } from 'react';
 import Map, { Layer, Source } from 'react-map-gl/maplibre';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import buildings from '../src/layers/8buildings.geojson'
@@ -9,13 +9,26 @@ import {Description} from './components/description/description'
 import './App.css';
 
 function App() {
-  const [cursor, setCursor] = useState('')
+  
   const [epoque, setEpoque] = useState([1698,2024])  
   const [descriptionActive, setDescriptionActive] = useState(true)
   const [selectedBuilding, setSelectedBuilding] = useState(null);
   const [volumeActive, setVolumeActive] = useState(false)
-  const [flatActive, setFlatActive] = useState(true)
-  
+  const [settings, setSettings] = useState({    
+    scrollZoom: false,
+    boxZoom: false,
+    dragRotate: false,
+    dragPan: false,
+    keyboard: false,
+    doubleClickZoom: false,
+    touchZoomRotate: false,
+    touchPitch: false,
+  })
+
+  const [cursor, setCursor] = useState('')
+
+  const mapRef=useRef()
+
   //handles
 
   const onClick = useCallback(e => {
@@ -34,13 +47,22 @@ function App() {
 
   const onDescriptionClick = useCallback(e => {
     setDescriptionActive(true)
-    setFlatActive(true)
     setVolumeActive(false)
     setSelectedBuilding(null)
+    setSettings({
+      scrollZoom: false,
+      boxZoom: false,
+      dragRotate: false,
+      dragPan: false,
+      keyboard: false,
+      doubleClickZoom: false,
+      touchZoomRotate: false,
+      touchPitch: false,
+    })
+    mapRef.current?.flyTo({center: [37.67, 55.415], zoom: 11, pitch: 0, bearing: 0, duration: 2000})
   },[])
 
   const toggle3D = () => {
-    setFlatActive(!flatActive);
     setVolumeActive(!volumeActive)
   }
 
@@ -67,8 +89,9 @@ function App() {
         </div>
       }
       <Map
+        ref={mapRef}
         initialViewState={{
-          longitude: 37.67,
+          longitude: 37.63,
           latitude: 55.415,
           zoom: 11,
           minZoom: 9
@@ -82,6 +105,8 @@ function App() {
         // onDragEnd={grab}
         // cursor={cursor}
         onClick={onClick}
+        {...settings}
+        
       >
         <Source type="geojson" data={buildings}>
           {selectedBuilding && <Layer {...selectLineLayer} filter={selectFilter} />}
@@ -89,8 +114,8 @@ function App() {
           {selectedBuilding && !volumeActive && <Layer {...selectPolyLayer} filter={selectFilter} />}
 
           {volumeActive && <Layer {...volumeLayer} filter={yearFilter}/>}
-          {descriptionActive && flatActive && <Layer {...greyLayer} beforeId={'2dbuildings'}/>}
-          {flatActive && <Layer {...flatLayer} filter={yearFilter}/>}
+          {descriptionActive && <Layer {...greyLayer} beforeId={'2dbuildings'}/>}
+          {!volumeActive && <Layer {...flatLayer} filter={yearFilter}/>}
           
           {!descriptionActive && <Layer {...unsortedLayer} />}
         </Source>
@@ -112,7 +137,7 @@ function App() {
         </div>}
       </Map>
       {descriptionActive && 
-        <Description setDescriptionActive={setDescriptionActive} setEpoque={setEpoque}/>
+        <Description setDescriptionActive={setDescriptionActive} setEpoque={setEpoque} setSettings={setSettings} mapRef={mapRef}/>
       }
       <div className='slider-div'>
         <div className='slider-counter'>
@@ -137,7 +162,7 @@ function App() {
       </div>
       {!descriptionActive && 
         <div className='button volume-button' onClick={toggle3D}>
-          {flatActive && <h2>2D</h2>}{volumeActive && <h2>3D</h2>}
+          {!volumeActive && <h2>2D</h2>}{volumeActive && <h2>3D</h2>}
         </div>
       }
       {!descriptionActive &&
