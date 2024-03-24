@@ -1,0 +1,48 @@
+.frontimg {
+    width: 200px;
+    border-radius: 100%;
+}
+.descolumn {
+    display: flex;
+    flex-direction: column;
+    position:absolute;
+    top: 75px;
+    right: 50px;
+    width: 500px;
+    color: white;
+    background-color: rgba(0, 0, 0, 0.5);
+    height: calc(100vh - 200px);
+    padding: 20px 15px;
+}
+
+.titlediv {
+    margin-bottom: 60vh;
+}
+
+.scrolldiv {
+    margin: 10px 0;
+    height: 100%;
+    overflow: auto;
+}
+
+.closeButton {
+    text-align: center;
+    border-radius: 10px;
+    width: 200px;
+    background-color: white;
+    color: black;
+}
+
+.closeButton:hover {
+    background-color: black;
+    color: white;
+}
+
+/* .scrolldiv::-webkit-scrollbar {
+    background-color: #2F2F37;
+    width: 10px;
+    height: 8px;
+}
+.scrolldiv::-webkit-scrollbar-thumb {
+    background: #8585AD;
+} */
