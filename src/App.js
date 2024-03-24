@@ -10,8 +10,7 @@ import './App.css';
 
 function App() {
   const [cursor, setCursor] = useState('')
-  const [minYear, setMinYear] = useState(1698)  
-  const [maxYear, setMaxYear] = useState(2024)
+  const [epoque, setEpoque] = useState([1698,2024])  
   const [descriptionActive, setDescriptionActive] = useState(true)
   const [selectedBuilding, setSelectedBuilding] = useState(null);
   const [volumeActive, setVolumeActive] = useState(false)
@@ -48,7 +47,7 @@ function App() {
   //filters
 
   const yearFilter = useMemo(
-    () => ['all',['>=', ['get','year_built'], minYear],['<=', ['get','year_built'], maxYear]], [minYear, maxYear]
+    () => ['all',['>=', ['get','year_built'], epoque[0]],['<=', ['get','year_built'], epoque[1]]], [epoque[0], epoque[1]]
   );
 
   const selectFilter = useMemo(
@@ -64,7 +63,7 @@ function App() {
       <AppHeader />
       {descriptionActive &&
         <div className='descriptionCounter'>
-          {minYear}{'—'}{maxYear}
+          {epoque[0]}{'—'}{epoque[1]}
         </div>
       }
       <Map
@@ -113,26 +112,26 @@ function App() {
         </div>}
       </Map>
       {descriptionActive && 
-        <Description setDescriptionActive={setDescriptionActive} setMaxYear={setMaxYear} setMinYear={setMinYear}/>
+        <Description setDescriptionActive={setDescriptionActive} setEpoque={setEpoque}/>
       }
       <div className='slider-div'>
         <div className='slider-counter'>
-          <span>{!descriptionActive && minYear || 1698}</span>
+          <span>{!descriptionActive && epoque[0] || 1698}</span>
         </div>
         <ReactSlider
             className="horizontal-slider"
             thumbClassName="slider-thumb"
             trackClassName="slider-track"
-            defaultValue={[minYear, maxYear]}
+            defaultValue={[epoque[0], epoque[1]]}
             min={1698}
             max={2024}
             step={1}
             renderThumb={(props, state) => <div {...props}></div>}
-            onAfterChange={(value, index) => {setMinYear(value[0]); setMaxYear(value[1])}}
+            onAfterChange={(value, index) => {setEpoque([value[0],value[1]])}}
             minDistance={0}
         />
         <div className='slider-counter'>
-          <span>{!descriptionActive && maxYear || 2024}</span>
+          <span>{!descriptionActive && epoque[1] || 2024}</span>
         </div>
 
       </div>

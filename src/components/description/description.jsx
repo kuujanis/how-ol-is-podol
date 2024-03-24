@@ -25,8 +25,7 @@ export const Description = (props) => {
 
     const selectEpoque = (epoque, min, max) => {
         setCurrent(epoque);
-        props.setMinYear(min);
-        props.setMaxYear(max)
+        props.setEpoque([min,max])
     }
 
     useEffect(() => {
@@ -54,8 +53,7 @@ export const Description = (props) => {
 
     const activateMap = () => {
         props.setDescriptionActive(false)
-        props.setMinYear(1698)
-        props.setMaxYear(2024)
+        props.setEpoque([1698,2024])
     }
 
     return (
