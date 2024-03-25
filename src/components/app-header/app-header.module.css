@@ -1,8 +1,9 @@
 .header {
     display: flex;
     flex-direction: row;
+    vertical-align: middle;
     background-color: black;
     color: white;
     height: 60px;
-    padding: 0 40px
+    padding: 0px 40px
   }

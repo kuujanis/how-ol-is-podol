@@ -1,16 +1,16 @@
 import { useState, useCallback, useMemo, useRef } from 'react';
 import Map, { Layer, Source } from 'react-map-gl/maplibre';
 import 'maplibre-gl/dist/maplibre-gl.css';
-import buildings from '../src/layers/8buildings.geojson'
+import buildings from '../src/layers/9buildings.geojson'
 import { volumeLayer, unsortedLayer, flatLayer, selectPolyLayer, selectLineLayer, selectVolumeLayer, greyLayer } from '../src/utils/index'
-import ReactSlider from 'react-slider';
+import { SliderTab } from './components/slider/slider';
 import AppHeader from './components//app-header/app-header'
 import {Description} from './components/description/description'
 import './App.css';
 
 function App() {
   
-  const [epoque, setEpoque] = useState([1698,2024])  
+  const [epoque, setEpoque] = useState([1781,2024])  
   const [descriptionActive, setDescriptionActive] = useState(true)
   const [selectedBuilding, setSelectedBuilding] = useState(null);
   const [volumeActive, setVolumeActive] = useState(false)
@@ -24,8 +24,6 @@ function App() {
     touchZoomRotate: false,
     touchPitch: false,
   })
-
-  const [cursor, setCursor] = useState('')
 
   const mapRef=useRef()
 
@@ -59,11 +57,12 @@ function App() {
       touchZoomRotate: false,
       touchPitch: false,
     })
-    mapRef.current?.flyTo({center: [37.67, 55.415], zoom: 11, pitch: 0, bearing: 0, duration: 2000})
+    mapRef.current?.flyTo({center: [37.63, 55.415], zoom: 11, pitch: 0, bearing: 0, duration: 2000})
   },[])
 
   const toggle3D = () => {
     setVolumeActive(!volumeActive)
+    mapRef.current?.flyTo(!volumeActive? {pitch: 60, duration: 2000}:{pitch: 0, duration: 2000})
   }
 
   //filters
@@ -76,16 +75,12 @@ function App() {
     () => ['in','full_id', selectedBuilding && selectedBuilding.feature.properties.full_id || ''], [selectedBuilding]
   )
 
-  // const point = useCallback(() => setCursor('pointer'), []);
-  // const grabbing = useCallback(() => setCursor('grabbing'), []);
-  // const grab = useCallback(() => setCursor('grab'), []);
-
   return (
     <div className="App">
       <AppHeader />
       {descriptionActive &&
         <div className='descriptionCounter'>
-          {epoque[0]}{'—'}{epoque[1]}
+          {epoque[0]}{epoque[0]!=epoque[1] && '—'+epoque[1]}
         </div>
       }
       <Map
@@ -99,11 +94,7 @@ function App() {
         style={{width: '100vw', height: 'calc(100vh - 120px)'}}
         mapStyle="https://api.maptiler.com/maps/f40a1280-834e-43de-b7ea-919faa734af4/style.json?key=5UXjcwcX8UyLW6zNAxsl"
         interactiveLayerIds={['2dbuildings','3dbuildings']}
-        // onMouseEnter={point}
-        // onMouseLeave={grab}
-        // onDrag={grabbing}
-        // onDragEnd={grab}
-        // cursor={cursor}
+        maxPitch={85}
         onClick={onClick}
         {...settings}
         
@@ -139,27 +130,7 @@ function App() {
       {descriptionActive && 
         <Description setDescriptionActive={setDescriptionActive} setEpoque={setEpoque} setSettings={setSettings} mapRef={mapRef}/>
       }
-      <div className='slider-div'>
-        <div className='slider-counter'>
-          <span>{!descriptionActive && epoque[0] || 1698}</span>
-        </div>
-        <ReactSlider
-            className="horizontal-slider"
-            thumbClassName="slider-thumb"
-            trackClassName="slider-track"
-            defaultValue={[epoque[0], epoque[1]]}
-            min={1698}
-            max={2024}
-            step={1}
-            renderThumb={(props, state) => <div {...props}></div>}
-            onAfterChange={(value, index) => {setEpoque([value[0],value[1]])}}
-            minDistance={0}
-        />
-        <div className='slider-counter'>
-          <span>{!descriptionActive && epoque[1] || 2024}</span>
-        </div>
-
-      </div>
+      <SliderTab epoque={epoque} setEpoque={setEpoque} descriptionActive={descriptionActive}/>
       {!descriptionActive && 
         <div className='button volume-button' onClick={toggle3D}>
           {!volumeActive && <h2>2D</h2>}{volumeActive && <h2>3D</h2>}
