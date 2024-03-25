@@ -25,23 +25,28 @@ export const Description = (props) => {
 
     const selectEpoque = (epoque, min, max) => {
         setCurrent(epoque);
-        props.setMinYear(min);
-        props.setMaxYear(max)
+        props.setEpoque([min,max])
     }
 
     useEffect(() => {
         if (inViewTitle) {
             selectEpoque('title', 1698, 2024)
+            props.mapRef.current?.flyTo({center: [37.63, 55.415], zoom: 11, pitch: 0, bearing: 0, duration: 2000})
         } else if (inViewMerchant) {
             selectEpoque('merchant',1698,1870)
+            props.mapRef.current?.flyTo({center: [37.585, 55.435], zoom: 12.2, pitch: 0, bearing: 0, duration: 2000})
         } else if (inViewZinger) {
             selectEpoque('zinger',1871,1920)
+            props.mapRef.current?.flyTo({center: [37.585, 55.435], zoom: 12.2, pitch: 0, bearing: 0, duration: 2000})
         } else if (inViewLenin) {
             selectEpoque('lenin',1921,1942)
+            props.mapRef.current?.flyTo({center: [37.60, 55.43], zoom: 11.8, pitch: 0, bearing: 0, duration: 2000})
         } else if (inViewStalin) {
             selectEpoque('stalin',1943,1957)
+            props.mapRef.current?.flyTo({center: [37.60, 55.43], zoom: 11.8, pitch: 0, bearing: 0, duration: 2000})
         } else if (inViewHrushev) {
             selectEpoque('hrushev',1958,1972)
+            props.mapRef.current?.flyTo({center: [37.63, 55.415], zoom: 11, pitch: 0, bearing: 0, duration: 2000})
         } else if (inViewStagnation) {
             selectEpoque('stagnation',1973,1992)
         } else if (inViewZeroes) {
@@ -54,8 +59,18 @@ export const Description = (props) => {
 
     const activateMap = () => {
         props.setDescriptionActive(false)
-        props.setMinYear(1698)
-        props.setMaxYear(2024)
+        props.setEpoque([1698,2024])
+        props.setSettings({
+            scrollZoom: true,
+            boxZoom: true,
+            dragRotate: true,
+            dragPan: true,
+            keyboard: true,
+            doubleClickZoom: true,
+            touchZoomRotate: true,
+            touchPitch: true,
+        })
+        props.mapRef.current?.flyTo({center: [37.55, 55.43], zoom: 12, pitch: 0, bearing: 0, duration: 2000})
     }
 
     return (
@@ -65,33 +80,10 @@ export const Description = (props) => {
                     <h1 id='title'>HoW OL' IS PoDoL</h1>
                     <p>
                         How ol' is Podol - это энтузиастский проект, целью которого является изучение городской среды
-                        Подольска. <span onClick={() => props.setDescriptionActive(false)}>Активировать карту.</span>
+                        Подольска. <br/> <b onClick={activateMap}>Активировать карту.</b>
                     </p>
-
                 </div>
-                {/* <div>
-                    <h1>Село Подол</h1>
-                    <h2>До 1781</h2>
-                    <img className={styles.frontimg} src=''/>
-                    <span>Менее 1% современной застройки</span>
-                    <p>
-                        До получения городских прав Подол представлял собой небольшое село, 
-                        возникшее вокруг ямской станции Варшавского Тракта. Его единственным каменным сооружением являлась 
-                        сохранившаяся до наших дней церковь Воскресения Словущего, стоящая на крутом берегу Пахры.
-                        За пределами будущего города начиналась бесскрайняя среднерусская пастораль, владение
-                        московских дворянских семейств. Их фамильные усадьбы ныне оказались в черте города и дали названия 
-                        некоторым его районам.
-                    </p>
-                    <h3>Характерные строения:</h3>
-                    <ul>
-                        <li>Церковь Воскресения Словущего</li>
-                        <li>Знаменская Церковь в Дубровицах</li>
-                        <li>Усадьба Голицыно</li>
-                    </ul>
-                    <h3>Стили: Барокко, Готика, Ярославская школа</h3>
-                    <h3>Районы: Дубровицы</h3>
-                </div> */}
-                <div ref={merchantRef}>
+                <div ref={merchantRef} className={styles.epoquediv}>
                     <h1 id='merchant'>Купеческий город</h1>
                     <h2>1781-1871</h2>
                     <img className={styles.frontimg} src=''/>
@@ -112,7 +104,7 @@ export const Description = (props) => {
                     <h3>Стили: Классический</h3>
                     <h3>Районы: Центральный</h3>
                 </div>
-                <div ref={zingerRef}>
+                <div ref={zingerRef} className={styles.epoquediv}>
                     <h1 id='zinger'>Промышленный город</h1>
                     <h2>1871-1921</h2>
                     <img className={styles.frontimg} src=''/>
@@ -136,7 +128,7 @@ export const Description = (props) => {
                     <h3>Стили: Модерн, Псевдорусский</h3>
                     <h3>Районы: Центральный</h3>
                 </div>
-                <div ref={leninRef}>
+                <div ref={leninRef} className={styles.epoquediv}>
                     <h1 id='lenin'>Революционный город</h1>
                     <h2>1921-1941</h2>
                     <img className={styles.frontimg} src=''/>
@@ -157,7 +149,7 @@ export const Description = (props) => {
                     <h3>Стили: Конструктивизм, Сталинский Ампир</h3>
                     <h3>Районы: Центральный, Парковый, Северный, Межшоссейный</h3>
                 </div>
-                <div ref={stalinRef}>
+                <div ref={stalinRef} className={styles.epoquediv}>
                     <h1 id='stalin'>Послевоенный город</h1>
                     <h2>1941-1956</h2>
                     <img className={styles.frontimg} src=''/>
@@ -178,7 +170,7 @@ export const Description = (props) => {
                     <h3>Стили: Сталинский Ампир</h3>
                     <h3>Районы: Парковый, Шепчинки, Климовск</h3>
                 </div>
-                <div ref={hrushevRef}>
+                <div ref={hrushevRef} className={styles.epoquediv}>
                     <h1 id='hrushev'>Город трудовой доблести</h1>
                     <h2>1956-1973</h2>
                     <img className={styles.frontimg} src=''/>
@@ -199,7 +191,7 @@ export const Description = (props) => {
                     <h3>Стили: Функционализм, Брутализм</h3>
                     <h3>Районы: Высотный, Ивановский, Юбилейный, Кутузово, Южный, Климовск, Межшоссейный Центральный</h3>
                 </div>
-                <div ref={stagnationRef}>
+                <div ref={stagnationRef} className={styles.epoquediv}>
                     <h1 id='stagnation'>Индустриальный город</h1>
                     <h2>1973-1993</h2>
                     <img className={styles.frontimg} src=''/>
@@ -221,7 +213,7 @@ export const Description = (props) => {
                     <h3>Стили: Советский модернизм</h3>
                     <h3>Районы: Парковый, Ивановский, Юбилейный, Кутузово, Климовск, Межшоссейный</h3>
                 </div>
-                <div ref={zeroesRef}>
+                <div ref={zeroesRef} className={styles.epoquediv}>
                     <h1 id='zeroes'>Постиндустриальный город</h1>
                     <h2>1993-2014</h2>
                     <img className={styles.frontimg} src=''/>
@@ -242,7 +234,7 @@ export const Description = (props) => {
                     <h3>Стили: Постмодернизм, Капиталистический Романтизм</h3>
                     <h3>Районы: Кузнечики, Центральный, Красная Горка</h3>
                 </div>
-                <div ref={todayRef}>
+                <div ref={todayRef} className={styles.epoquediv}>
                     <h1 id='today'>Постмодернистский город</h1>
                     <h2>2014-2024</h2>
                     <img className={styles.frontimg} src=''/>
@@ -263,7 +255,7 @@ export const Description = (props) => {
                     <h3>Районы: Кузнечики, Коледино</h3>
                 </div>
                 <div className={styles.closeButton} onClick={activateMap}>
-                    <h2>close</h2>
+                    <h3>Активировать карту</h3>
                 </div>
             </div>
         </section>

@@ -4,8 +4,6 @@
   background-color: black;
 }
 
-
-
 .descriptionCounter {
   position: absolute;
   z-index: 5;
@@ -25,45 +23,6 @@
   height: 200px;
   color: white;
   background-color: rgb(0,0,0,0.6);
-}
-.slider-div{
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-content: center;
-  width: 100%;
-  height: 60px;
-  background-color: black;
-}
-.slider-counter {
-  color: white;
-  padding: 5px 25px;
-  font-size: 2rem;
-}
-
-.horizontal-slider {
-  width: 80vw;
-  color: white;
-  padding: 10px 0
-}
-
-.slider-thumb {
-  width: 20px; 
-  height: 20px;
-  background-color: white;
-  border-radius: 100%;
-}
-.horizontal-slider .slider-track {
-  height: 5px;
-  top: 18px
-}
-
-.slider-track.slider-track-0 {
-  background-color: black;
-}
-
-.slider-track.slider-track-1 {
-  background-color: white;
 }
 
 .button {

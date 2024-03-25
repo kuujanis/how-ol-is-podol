@@ -1,22 +1,32 @@
-import { useState, useCallback, useMemo } from 'react';
+import { useState, useCallback, useMemo, useRef } from 'react';
 import Map, { Layer, Source } from 'react-map-gl/maplibre';
 import 'maplibre-gl/dist/maplibre-gl.css';
-import buildings from '../src/layers/8buildings.geojson'
+import buildings from '../src/layers/9buildings.geojson'
 import { volumeLayer, unsortedLayer, flatLayer, selectPolyLayer, selectLineLayer, selectVolumeLayer, greyLayer } from '../src/utils/index'
-import ReactSlider from 'react-slider';
+import { SliderTab } from './components/slider/slider';
 import AppHeader from './components//app-header/app-header'
 import {Description} from './components/description/description'
 import './App.css';
 
 function App() {
-  const [cursor, setCursor] = useState('')
-  const [minYear, setMinYear] = useState(1698)  
-  const [maxYear, setMaxYear] = useState(2024)
+  
+  const [epoque, setEpoque] = useState([1781,2024])  
   const [descriptionActive, setDescriptionActive] = useState(true)
   const [selectedBuilding, setSelectedBuilding] = useState(null);
   const [volumeActive, setVolumeActive] = useState(false)
-  const [flatActive, setFlatActive] = useState(true)
-  
+  const [settings, setSettings] = useState({    
+    scrollZoom: false,
+    boxZoom: false,
+    dragRotate: false,
+    dragPan: false,
+    keyboard: false,
+    doubleClickZoom: false,
+    touchZoomRotate: false,
+    touchPitch: false,
+  })
+
+  const mapRef=useRef()
+
   //handles
 
   const onClick = useCallback(e => {
@@ -35,41 +45,48 @@ function App() {
 
   const onDescriptionClick = useCallback(e => {
     setDescriptionActive(true)
-    setFlatActive(true)
     setVolumeActive(false)
     setSelectedBuilding(null)
+    setSettings({
+      scrollZoom: false,
+      boxZoom: false,
+      dragRotate: false,
+      dragPan: false,
+      keyboard: false,
+      doubleClickZoom: false,
+      touchZoomRotate: false,
+      touchPitch: false,
+    })
+    mapRef.current?.flyTo({center: [37.63, 55.415], zoom: 11, pitch: 0, bearing: 0, duration: 2000})
   },[])
 
   const toggle3D = () => {
-    setFlatActive(!flatActive);
     setVolumeActive(!volumeActive)
+    mapRef.current?.flyTo(!volumeActive? {pitch: 60, duration: 2000}:{pitch: 0, duration: 2000})
   }
 
   //filters
 
   const yearFilter = useMemo(
-    () => ['all',['>=', ['get','year_built'], minYear],['<=', ['get','year_built'], maxYear]], [minYear, maxYear]
+    () => ['all',['>=', ['get','year_built'], epoque[0]],['<=', ['get','year_built'], epoque[1]]], [epoque[0], epoque[1]]
   );
 
   const selectFilter = useMemo(
     () => ['in','full_id', selectedBuilding && selectedBuilding.feature.properties.full_id || ''], [selectedBuilding]
   )
 
-  // const point = useCallback(() => setCursor('pointer'), []);
-  // const grabbing = useCallback(() => setCursor('grabbing'), []);
-  // const grab = useCallback(() => setCursor('grab'), []);
-
   return (
     <div className="App">
       <AppHeader />
       {descriptionActive &&
         <div className='descriptionCounter'>
-          {minYear}{'—'}{maxYear}
+          {epoque[0]}{epoque[0]!=epoque[1] && '—'+epoque[1]}
         </div>
       }
       <Map
+        ref={mapRef}
         initialViewState={{
-          longitude: 37.67,
+          longitude: 37.63,
           latitude: 55.415,
           zoom: 11,
           minZoom: 9
@@ -77,12 +94,10 @@ function App() {
         style={{width: '100vw', height: 'calc(100vh - 120px)'}}
         mapStyle="https://api.maptiler.com/maps/f40a1280-834e-43de-b7ea-919faa734af4/style.json?key=5UXjcwcX8UyLW6zNAxsl"
         interactiveLayerIds={['2dbuildings','3dbuildings']}
-        // onMouseEnter={point}
-        // onMouseLeave={grab}
-        // onDrag={grabbing}
-        // onDragEnd={grab}
-        // cursor={cursor}
+        maxPitch={85}
         onClick={onClick}
+        {...settings}
+        
       >
         <Source type="geojson" data={buildings}>
           {selectedBuilding && <Layer {...selectLineLayer} filter={selectFilter} />}
@@ -90,8 +105,8 @@ function App() {
           {selectedBuilding && !volumeActive && <Layer {...selectPolyLayer} filter={selectFilter} />}
 
           {volumeActive && <Layer {...volumeLayer} filter={yearFilter}/>}
-          {descriptionActive && flatActive && <Layer {...greyLayer} beforeId={'2dbuildings'}/>}
-          {flatActive && <Layer {...flatLayer} filter={yearFilter}/>}
+          {descriptionActive && <Layer {...greyLayer} beforeId={'2dbuildings'}/>}
+          {!volumeActive && <Layer {...flatLayer} filter={yearFilter}/>}
           
           {!descriptionActive && <Layer {...unsortedLayer} />}
         </Source>
@@ -113,32 +128,12 @@ function App() {
         </div>}
       </Map>
       {descriptionActive && 
-        <Description setDescriptionActive={setDescriptionActive} setMaxYear={setMaxYear} setMinYear={setMinYear}/>
+        <Description setDescriptionActive={setDescriptionActive} setEpoque={setEpoque} setSettings={setSettings} mapRef={mapRef}/>
       }
-      <div className='slider-div'>
-        <div className='slider-counter'>
-          <span>{!descriptionActive && minYear || 1698}</span>
-        </div>
-        <ReactSlider
-            className="horizontal-slider"
-            thumbClassName="slider-thumb"
-            trackClassName="slider-track"
-            defaultValue={[minYear, maxYear]}
-            min={1698}
-            max={2024}
-            step={1}
-            renderThumb={(props, state) => <div {...props}></div>}
-            onAfterChange={(value, index) => {setMinYear(value[0]); setMaxYear(value[1])}}
-            minDistance={0}
-        />
-        <div className='slider-counter'>
-          <span>{!descriptionActive && maxYear || 2024}</span>
-        </div>
-
-      </div>
+      <SliderTab epoque={epoque} setEpoque={setEpoque} descriptionActive={descriptionActive}/>
       {!descriptionActive && 
         <div className='button volume-button' onClick={toggle3D}>
-          {flatActive && <h2>2D</h2>}{volumeActive && <h2>3D</h2>}
+          {!volumeActive && <h2>2D</h2>}{volumeActive && <h2>3D</h2>}
         </div>
       }
       {!descriptionActive &&
