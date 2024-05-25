@@ -1,5 +1,6 @@
 .frontimg {
-    width: 200px;
+    width: 160px;
+    height: 160px;
     border-radius: 100%;
 }
 .descolumn {
@@ -37,6 +38,7 @@
     padding: 4px 0;
     background-color: white;
     color: black;
+    margin: 40px auto
 }
 
 .closeButton:hover {
@@ -51,4 +53,24 @@
 }
 .scrolldiv::-webkit-scrollbar-thumb {
     background: #000000;
+}
+
+.histogram {
+    display: flex;
+    flex-direction: column-reverse;
+    gap: 5px;
+    background-color: transparent;
+    align-items: center;
+}
+.histogram .row {
+    height: 30px;
+    width: 50px; 
+    color: silver;
+    align-items: center;
+    vertical-align: center;
+    border-radius: 5px;
+}
+
+.row b {
+    margin: auto
 }
