@@ -1,7 +1,18 @@
+.char {
+    display: flex;
+    gap: 40px
+}
 .frontimg {
+    display: flex;
     width: 160px;
     height: 160px;
     border-radius: 100%;
+
+}
+.stats {
+    display: flex;
+    flex-direction: column;
+
 }
 .descolumn {
     display: flex;

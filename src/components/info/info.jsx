@@ -4,6 +4,7 @@ export const Info = ({selectedBuilding, onCloseClick}) => {
     return(
         <div className={styles.info} onClick={onCloseClick}>
         <h1>{selectedBuilding.feature.properties.aproxdate ?? selectedBuilding.feature.properties.year_built}</h1>
+        {/* <h2>Возраст здания: {2025-selectedBuilding.feature.properties.year_built} лет</h2> */}
         <h3>
           {selectedBuilding.feature.properties.name ? selectedBuilding.feature.properties.name : selectedBuilding.feature.properties.type}
         </h3>
@@ -22,7 +23,7 @@ export const Info = ({selectedBuilding, onCloseClick}) => {
           <p>Архитектор: {selectedBuilding.feature.properties.architect}</p>
         }
         {selectedBuilding.feature.properties.Source && 
-          <p>Источник: {selectedBuilding.feature.properties.Source}</p>
+          <p>Источник: {selectedBuilding.feature.properties.src}</p>
         }
         </div>
     )

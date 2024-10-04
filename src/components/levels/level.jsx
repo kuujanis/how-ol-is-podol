@@ -1,13 +1,21 @@
 import { useState } from 'react';
 import styles from './level.module.css'
+import { useDispatch, useSelector } from 'react-redux';
+import { setEpoque } from '../../services/slices/map/map-slice';
 
-export const Level = ({width, color, frame, epoque, setEpoque, tabid, descriptionActive}) => {
+export const Level = ({width, color, frame, tabid}) => {
+
+    const dispatch = useDispatch()
+
+    const epoque = useSelector(state => state.map.epoque)
+    const descriptionActive = useSelector(state => state.map.description)
+
     const active = ((epoque[1] >= frame[0]) && (epoque[0] <= frame[1]))
     const clickHandle = (e) => {
         let ep = frame
         if (frame[1]<epoque[0]) {ep[1]=epoque[1]}
         if (frame[0]>epoque[1]) {ep[0] = epoque[0]}
-        setEpoque(ep)
+        dispatch(setEpoque(ep))
     }
     const descriptionClickHandle = (e) => {
 

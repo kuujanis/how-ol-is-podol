@@ -4,6 +4,11 @@
   background-color: black;
 }
 
+::selection {
+  background: orange;
+  color: white
+}
+
 .descriptionCounter {
   position: relative;
   z-index: 5;
@@ -19,6 +24,7 @@
   left: 40px;
   top: 40px;
   display: flex;
+  width: 400px;
   align-items: center;
   background-color: transparent;
 }
@@ -74,6 +80,15 @@ input {
   display: flex;
   flex-direction: column;
   gap: 2px;
+}
+
+.lost-button {
+  top: 18vh;
+}
+
+.unsorted-button {
+  top: 18vh;
+  right: 12vw;
 }
 
 .dateTab {

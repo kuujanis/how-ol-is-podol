@@ -24,7 +24,7 @@ export const histogram = [
 ]
 
 const fill = ['rgba', 0, 255, 0, 0.5]
-const line = ['rgba', 0, 255, 0, 1]
+const line = ['rgba', 100, 100, 100, 1]
 const grey = ['rgba', 70, 70, 70, 1]
 const white = ['rgba', 255, 255, 255, 1]
 
@@ -33,8 +33,9 @@ export const selectPolyLayer = {
   type: 'fill',
   layout: {},
   paint: {
-      'fill-color': fill,
-      "fill-outline-color": line
+      'fill-color': line,
+      "fill-outline-color": line,
+      'fill-opacity': 0.5
   }  
 }
 export const selectVolumeLayer = {
@@ -50,41 +51,31 @@ export const selectVolumeLayer = {
         9, 0,
         10, ['*',['get', 'lvl'],5]
     ],
-    'fill-extrusion-opacity': 1,
+    'fill-extrusion-opacity': 0.5,
 },
 }
-export const selectLineLayer = {
-  id: 'slected-line',
-  type: 'line',
-  layout: {},
-  paint: {
-      "line-color": line,
-      'line-width': 3
-  }  
-}
 
-export const volumeLayer = {
-    id: '3dbuildings',
-    'type': 'fill-extrusion',
-    'minzoom': 9,
-    'paint': {
-        'fill-extrusion-color': {
-          property: 'year_built',
-          type: 'interval',
-          stops: EPOQUES
-        },
-        'fill-extrusion-height': [
-            'interpolate',
-            ['linear'],
-            ['zoom'],
-            9, 0,
-            10, ['*',['get', 'lvl'],5]
-        ]
-    },
+
+const temp3d = {
+  'type': 'fill-extrusion',
+  'minzoom': 9,
+  'paint': {
+      'fill-extrusion-color': {
+        property: 'year_built',
+        type: 'interval',
+        stops: EPOQUES
+      },
+      'fill-extrusion-height': [
+          'interpolate',
+          ['linear'],
+          ['zoom'],
+          9, 0,
+          10, ['*',['get', 'lvl'],5]
+      ]
+  },
   filter: ['>',['get','year_built'],0]
 }
-export const flatLayer = {
-  id: '2dbuildings',
+const temp2d = {
   type: 'fill',
   layout: {},
   paint: {
@@ -95,8 +86,7 @@ export const flatLayer = {
       },
   }  
 }
-export const greyLayer = {
-  id: 'greybuildings',
+const tempgrey = {
   type: 'fill',
   layout: {},
   paint: {
@@ -107,7 +97,34 @@ export const greyLayer = {
       },
       'fill-opacity': 0.3
   },
-  filter: ['>',['get','year_built'],0] 
+  filter: ['>',['get','year_built'],0]   
+}
+
+export const build3d = {
+    id: 'build3d',
+    ...temp3d
+}
+export const build2d = {
+  id: 'build2d',
+  ...temp2d
+}
+export const lost3d = {
+  id: 'lost3d',
+  ...temp3d
+}
+export const lost2d = {
+  id: 'lost2d',
+  ...temp2d
+}
+
+export const buildGray = {
+  id: 'buildGray',
+  ...tempgrey
+}
+
+export const lostGray = {
+  id: 'lostGray',
+  ...tempgrey
 }
 
 export const searchLayer = {
@@ -124,12 +141,9 @@ export const searchLayer = {
   },
   filter: ['>',['get','year_built'],0] 
 }
-
-
 export const unsortedLayer = {
-  id: 'unsortedBuildings',
+  id: 'unsorted',
   type: 'fill',
-  minzoom: 15,
   paint: {
     'fill-color': 'transparent',
     'fill-outline-color': '#ffffff',
@@ -138,19 +152,29 @@ export const unsortedLayer = {
   filter: ['<',['get','year_built'],1]
 }
 
-export const raionLayer = {
-  id: 'raions',
-  type: 'symbol',
-  maxzoom: 15,
-  minzoom: 11,
-  layout: {
-    'text-field': ['get','name'],
-    'text-size': 11
-  },
-  paint: {
-    'text-color': white,
-    'text-halo-width': 8,
-    'text-halo-blur': 80,
-    'text-halo-color': grey
-  }
-}
+
+// export const raionLayer = {
+//   id: 'raions',
+//   type: 'symbol',
+//   maxzoom: 15,
+//   minzoom: 11,
+//   layout: {
+//     'text-field': ['get','name'],
+//     'text-size': 11
+//   },
+//   paint: {
+//     'text-color': white,
+//     'text-halo-width': 8,
+//     'text-halo-blur': 80,
+//     'text-halo-color': grey
+//   }
+// }
+// export const selectLineLayer = {
+//   id: 'slected-line',
+//   type: 'line',
+//   layout: {},
+//   paint: {
+//       "line-color": line,
+//       'line-width': 3
+//   }  
+// }

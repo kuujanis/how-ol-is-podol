@@ -1,9 +1,12 @@
-import { useState, useCallback, useMemo, useRef } from 'react';
+import { useState, useCallback, useMemo, useRef, useEffect } from 'react';
 import Map, { Layer, Source, ScaleControl, NavigationControl } from 'react-map-gl/maplibre';
 import 'maplibre-gl/dist/maplibre-gl.css';
-import buildings from '../src/layers/13buildings.geojson'
 import raions from '../src/layers/raions.geojson'
-import { volumeLayer, unsortedLayer, flatLayer, selectPolyLayer, selectLineLayer, selectVolumeLayer, greyLayer, searchLayer, raionLayer, histogram } from '../src/utils/index'
+import { 
+  build2d, build3d, lost2d, lost3d, unsortedLayer, flatLayer, selectPolyLayer, selectVolumeLayer, greyLayer, searchLayer, 
+  histogram, 
+  buildGray,
+  lostGray} from '../src/utils/index'
 import { SliderTab } from './components/slider/slider';
 import AppHeader from './components//app-header/app-header'
 import {Description} from './components/description/description'
@@ -11,16 +14,14 @@ import './App.css';
 import { Scale } from './components/scale/scale';
 import { Info } from './components/info/info';
 import { LevelTab } from './components/levels/level-tab';
+import { useDispatch, useSelector } from 'react-redux';
+import { setEpoque, setVolume, showDescription } from './services/slices/map/map-slice';
 // import { ScaleControl } from 'react-map-gl';
 
 
 function App() {
-  
-  const [epoque, setEpoque] = useState([1781,2024])  
-  const [descriptionActive, setDescriptionActive] = useState(true)
-  const [selectedBuilding, setSelectedBuilding] = useState(null);
-  const [volumeActive, setVolumeActive] = useState(false)
-  const [settings, setSettings] = useState({    
+
+  const disabledSettings = {    
     scrollZoom: false,
     boxZoom: false,
     dragRotate: false,
@@ -29,9 +30,21 @@ function App() {
     doubleClickZoom: false,
     touchZoomRotate: false,
     touchPitch: false,
-  })
+  }
+
+  const dispatch = useDispatch()
+
+  const descriptionActive = useSelector(state => state.map.description)
+  const epoque = useSelector(state => state.map.epoque)
+  const volume = useSelector(state => state.map.volume)
+
+  const [selectedBuilding, selectBuilding] = useState(null)
+  const [settings, setSettings] = useState(disabledSettings)
   const [address, setAddress] = useState('')
   const [zoom, setZoom] = useState(11)
+
+  const [lost, setLost] = useState(true)
+  const [unsort, setUnsort] = useState(false)
 
   const mapRef=useRef()
 
@@ -44,47 +57,53 @@ function App() {
     const selectedFeature = features && features[0]
     // console.log(selectedFeature)
     //передаем feature в состояние
-    setSelectedBuilding(selectedFeature && {feature: selectedFeature})
+    selectBuilding(selectedFeature && {feature: selectedFeature})
     console.log({feature: selectedFeature})
   }, [])
 
-  const onWheel = () => {
-    setZoom(mapRef.current?.getZoom())
-  }
+  // const onWheel = () => {
+  //   setZoom(mapRef.current?.getZoom())
+  // }
 
   const onCloseClick = useCallback(e => {
-    setSelectedBuilding(null)
+    selectBuilding(null)
   },[])
 
   const onDescriptionClick = useCallback(e => {
-    setDescriptionActive(true)
-    setVolumeActive(false)
-    setSelectedBuilding(null)
-    setSettings({
-      scrollZoom: false,
-      boxZoom: false,
-      dragRotate: false,
-      dragPan: false,
-      keyboard: false,
-      doubleClickZoom: false,
-      touchZoomRotate: false,
-      touchPitch: false,
-    })
-    setEpoque(1781,2024)
+    dispatch(showDescription(true))
+    dispatch(setVolume(false))
+    dispatch(setEpoque([1781,2024]))
+    selectBuilding(null)
+    setSettings(disabledSettings)
     mapRef.current?.flyTo({center: [37.63, 55.415], zoom: 11, pitch: 0, bearing: 0, duration: 2000})
   },[])
 
+  //layer toggle
+
+  const toggleLost = e => {
+    setLost(!lost)
+    console.log(lost)
+  }
+
+  const toggleUnsorted = e => {
+    setUnsort(!unsort)
+    console.log(unsort)
+  }
+
   const toggle3D = () => {
     setSettings({...settings, dragRotate: !settings.dragRotate})
-    setVolumeActive(!volumeActive)
-    mapRef.current?.flyTo(!volumeActive? {pitch: 60, duration: 2000}:{pitch: 0, bearing: 0, duration: 2000})
+    dispatch(setVolume(!volume))
+    mapRef.current?.flyTo(!volume? {pitch: 60, duration: 2000}:{pitch: 0, bearing: 0, duration: 2000})
   }
+
   const onChange = e => {
     setAddress(e.target.value)
     mapRef.current.flyTo({center: [37.55, 55.43], zoom: 10.8,  pitch: 0, bearing: 0})
   }
 
-  
+  // useEffect(() => {
+  //   setFeatures(mapRef.current.querySourceFeatures('123',{layers:['search'], filter: ['>',['get','year_built'],0]}))
+  // }, [])
 
   const onSearch = () => {
     const features = mapRef.current.querySourceFeatures('123',{layers:['search'], filter: ['>',['get','year_built'],0]})
@@ -100,33 +119,16 @@ function App() {
     // console.log(features[288].properties.addr_stree)
     if (house) {
       mapRef.current.flyTo({center: [house.properties.xc, house.properties.yc], zoom: 16, duration: 2000})
-      setSelectedBuilding({feature: house})
+      selectBuilding({feature: house})
     }
     console.log(house)
     // console.log(address.trim().replace('улица', '').replace('.','').trim())
   }
 
-  // const features = mapRef.current.querySourceFeatures('123',{layers:['2dbuildings'], filter: ['>',['get','year_built'],0]})
-
-  // const nice_address = address.toLowerCase()
-  // const address_arr = nice_address.split(' ')
-  // const house_num = address_arr[address_arr.length-1]
-  // console.log(house_num)
-  // const street_name = nice_address.replace(house_num, '').trim()
-  // console.log(street_name)
-  // const street = features.filter(feature => feature.properties.addr_stree?.toLowerCase().includes('космо'))
-  // console.log(street)
-  // const house = street.find(crib => crib.properties.addr_house.toLowerCase() === house_num) 
-  // // const y = features[288].properties.addr_stree.includes('лип')
-  // // console.log(features[288].properties.addr_stree)
-  // if (house) {mapRef.current.flyTo({center: [house.properties.xc, house.properties.yc], zoom: 16, duration: 2000})
-  // setSelectedBuilding({feature: house})}
-  // console.log(house)
-
   //filters
 
   const yearFilter = useMemo(
-    () => ['all',['>=', ['get','year_built'], epoque[0]],['<=', ['get','year_built'], epoque[1]], ['>',['get','year_lost'],epoque[1]]], [epoque]
+    () => ['all',['>=', ['get','year_built'], epoque[0]],['<=', ['get','year_built'], epoque[1]], ['>',['get','year_lost'],epoque[1]] ], [epoque]
   );
   const backFilter = useMemo(
     () => ['all',['>', ['get','year_built'], 0],['<', ['get','year_built'], epoque[0]], ['>',['get','year_lost'],epoque[1]]], [epoque]
@@ -151,10 +153,10 @@ function App() {
         }}
         style={{width: '100vw', height: 'calc(100vh - 137px)'}}
         mapStyle="https://api.maptiler.com/maps/f40a1280-834e-43de-b7ea-919faa734af4/style.json?key=5UXjcwcX8UyLW6zNAxsl"
-        interactiveLayerIds={['2dbuildings','3dbuildings']}
+        interactiveLayerIds={['build2d','build3d','lost2d','lost3d','unsorted']}
         maxPitch={85}
         onClick={onClick}
-        onWheel={onWheel}
+        // onWheel={onWheel}
         {...settings}
         
       > 
@@ -181,21 +183,25 @@ function App() {
           </div>
         }
         {!descriptionActive && selectedBuilding && <Info selectedBuilding={selectedBuilding} onCloseClick={onCloseClick}/>}
-        <Source id='123' type="geojson" data={buildings}>
-          {descriptionActive && <Layer {...greyLayer} filter={backFilter}/>}
-          {volumeActive && <Layer {...volumeLayer} filter={yearFilter}/>}
-          {!volumeActive && <Layer {...flatLayer} filter={yearFilter}/>}
+        <Source id='123' type="geojson" data={require('../src/layers/build1.geojson')}>
+          {descriptionActive && <Layer {...buildGray} filter={backFilter}/>}
+          {volume && <Layer { ...build3d} filter={yearFilter}/>}
+          {!volume && <Layer {...build2d} filter={yearFilter}/>}
           
           {!descriptionActive && <Layer {...searchLayer}/>}
-          {!descriptionActive && <Layer {...unsortedLayer} />}
+          {unsort && !descriptionActive && <Layer {...unsortedLayer} />}
 
-          {selectedBuilding && <Layer {...selectLineLayer} filter={selectFilter} />}
-          {selectedBuilding && volumeActive && <Layer {...selectVolumeLayer} filter={selectFilter} />}
-          {selectedBuilding && !volumeActive && <Layer {...selectPolyLayer} filter={selectFilter} />}
+
+          {selectedBuilding && volume && <Layer {...selectVolumeLayer} filter={selectFilter} />}
+          {selectedBuilding && !volume && <Layer {...selectPolyLayer} filter={selectFilter} />}
         </Source>
-        {/* <Source  id='321' type="geojson" data={raions}>
-          {descriptionActive && <Layer {...raionLayer}/>}
-        </Source> */}
+        <Source  id='321' type="geojson" data={require('../src/layers/lost1.geojson')}>
+          {lost && volume && <Layer {...lost3d} filter={yearFilter}/>}
+          {lost && !volume && <Layer {...lost2d} filter={yearFilter}/>}
+          {descriptionActive && <Layer {...lostGray} filter={backFilter}/>}
+          {/* {selectedBuilding && volume && <Layer {...selectVolumeLayer} filter={selectFilter} />}
+          {selectedBuilding && !volume && <Layer {...selectPolyLayer} filter={selectFilter} />} */}
+        </Source>
 
 
       <ScaleControl/>
@@ -204,7 +210,7 @@ function App() {
 
       {descriptionActive && 
         <Description 
-          setDescriptionActive={setDescriptionActive} setEpoque={setEpoque} setZoom={setZoom} setSettings={setSettings} mapRef={mapRef}
+          setEpoque={setEpoque} setZoom={setZoom} setSettings={setSettings} mapRef={mapRef}
         />
       }
 
@@ -221,17 +227,27 @@ function App() {
       }
       {!descriptionActive && 
         <div className='button volume-button' onClick={toggle3D}>
-          {!volumeActive && <h2>2D</h2>}{volumeActive && <h2>3D</h2>}
+          {!volume && <h2>2D</h2>}{volume && <h2>3D</h2>}
         </div>
       }
       {!descriptionActive &&
         <div className='button description-button' onClick={onDescriptionClick}>
-          <h2>1</h2>
+          <h2>X</h2>
+        </div>
+      }
+      {!descriptionActive &&
+        <div className='button lost-button' onClick={toggleLost}>
+          <h2>L</h2>
+        </div>
+      }
+      {!descriptionActive &&
+        <div className='button unsorted-button' onClick={toggleUnsorted}>
+          <h2>?</h2>
         </div>
       }
       {/* {!volumeActive && <Scale zoom={zoom}/>} */}
       
-      <SliderTab epoque={epoque} setEpoque={setEpoque} descriptionActive={descriptionActive}/>
+      <SliderTab />
     </div>
   );
 }
