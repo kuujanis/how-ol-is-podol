@@ -29,7 +29,7 @@ const grey = ['rgba', 70, 70, 70, 1]
 const white = ['rgba', 255, 255, 255, 1]
 
 export const selectPolyLayer = {
-  id: 'slected-poly',
+  id: 'selected-poly',
   type: 'fill',
   layout: {},
   paint: {
@@ -39,7 +39,7 @@ export const selectPolyLayer = {
   }  
 }
 export const selectVolumeLayer = {
-  id: 'slected-volume',
+  id: 'selected-volume',
   type: 'fill-extrusion',
   layout: {},
   'paint': {
@@ -53,6 +53,33 @@ export const selectVolumeLayer = {
     ],
     'fill-extrusion-opacity': 0.5,
 },
+}
+
+export const selectLostVolume = {
+  id: 'select-lost',
+  type: 'fill-extrusion',
+  layout: {},
+  'paint': {
+    'fill-extrusion-color': line,
+    'fill-extrusion-height': [
+        'interpolate',
+        ['linear'],
+        ['zoom'],
+        9, 0,
+        10, ['*',['get', 'lvl'],5]
+    ],
+    'fill-extrusion-opacity': 0.5,
+},
+}
+export const selectLost = {
+  id: 'select-lost',
+  type: 'fill',
+  layout: {},
+  paint: {
+      'fill-color': line,
+      "fill-outline-color": line,
+      'fill-opacity': 0.5
+  }  
 }
 
 

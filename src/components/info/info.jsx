@@ -3,7 +3,8 @@ import styles from './info.module.css'
 export const Info = ({selectedBuilding, onCloseClick}) => {
     return(
         <div className={styles.info} onClick={onCloseClick}>
-        <h1>{selectedBuilding.feature.properties.aproxdate ?? selectedBuilding.feature.properties.year_built}</h1>
+        <h1>{selectedBuilding.feature.properties.aproxdate ?? selectedBuilding.feature.properties.year_built}{selectedBuilding.feature.properties.year_lost<2030 ? ' — '+ selectedBuilding.feature.properties.year_lost : ''}</h1>
+        
         {/* <h2>Возраст здания: {2025-selectedBuilding.feature.properties.year_built} лет</h2> */}
         <h3>
           {selectedBuilding.feature.properties.name ? selectedBuilding.feature.properties.name : selectedBuilding.feature.properties.type}

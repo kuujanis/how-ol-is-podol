@@ -6,7 +6,9 @@ import {
   build2d, build3d, lost2d, lost3d, unsortedLayer, flatLayer, selectPolyLayer, selectVolumeLayer, greyLayer, searchLayer, 
   histogram, 
   buildGray,
-  lostGray} from '../src/utils/index'
+  lostGray,
+  selectLostVolume,
+  selectLost} from '../src/utils/index'
 import { SliderTab } from './components/slider/slider';
 import AppHeader from './components//app-header/app-header'
 import {Description} from './components/description/description'
@@ -199,8 +201,8 @@ function App() {
           {lost && volume && <Layer {...lost3d} filter={yearFilter}/>}
           {lost && !volume && <Layer {...lost2d} filter={yearFilter}/>}
           {descriptionActive && <Layer {...lostGray} filter={backFilter}/>}
-          {/* {selectedBuilding && volume && <Layer {...selectVolumeLayer} filter={selectFilter} />}
-          {selectedBuilding && !volume && <Layer {...selectPolyLayer} filter={selectFilter} />} */}
+          {selectedBuilding && volume && <Layer {...selectLostVolume} filter={selectFilter} />}
+          {selectedBuilding && !volume && <Layer {...selectLost} filter={selectFilter} />}
         </Source>
 
 
