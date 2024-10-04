@@ -4,66 +4,50 @@
   background-color: black;
 }
 
-
+::selection {
+  background: orange;
+  color: white
+}
 
 .descriptionCounter {
-  position: absolute;
+  position: relative;
   z-index: 5;
-  left: 40px;
-  top: 80px;
+  left: 50px;
+  top: 60px;
   font-size: 3.5rem;
   color: rgb(220,220,220);
 }
 
-.counter {
-  position: absolute;
-  padding: 5px 10px;
-  border-radius: 10px 20px;
-  top: 30px;
-  left: 60px;
-  width: 300px;
-  height: 200px;
-  color: white;
-  background-color: rgb(0,0,0,0.6);
-}
-.slider-div{
+.searchbar {
+  position: relative;
+  z-index: 5;
+  left: 40px;
+  top: 40px;
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-content: center;
-  width: 100%;
-  height: 60px;
-  background-color: black;
-}
-.slider-counter {
-  color: white;
-  padding: 5px 25px;
-  font-size: 2rem;
+  width: 400px;
+  align-items: center;
+  background-color: transparent;
 }
 
-.horizontal-slider {
-  width: 80vw;
-  color: white;
-  padding: 10px 0
+input {
+  color: gray;
+  border: transparent;
+  height: 40px;
+  width: 150px;
+  border-radius: 10px;
+  padding: 2px 12px 2px 6px;
 }
 
-.slider-thumb {
-  width: 20px; 
-  height: 20px;
-  background-color: white;
+.searchButton {
+  margin-left: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 50px;
+  width: 50px;
+  color: white;
+  background-color: rgb(0,0,0,1);
   border-radius: 100%;
-}
-.horizontal-slider .slider-track {
-  height: 5px;
-  top: 18px
-}
-
-.slider-track.slider-track-0 {
-  background-color: black;
-}
-
-.slider-track.slider-track-1 {
-  background-color: white;
 }
 
 .button {
@@ -89,4 +73,31 @@
 
 .description-button {
   bottom: 15vh;
+}
+
+.zoom-button {
+  bottom: 45vh;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.lost-button {
+  top: 18vh;
+}
+
+.unsorted-button {
+  top: 18vh;
+  right: 12vw;
+}
+
+.dateTab {
+  position: absolute;
+  display: grid;
+  grid-template-columns: 6% 30% 21% 7% 7% 7% 7% 7% 7%;
+  height: 23px;
+  width: 100%;
+  color: white;
+  background-color: rgb(0, 0, 0, 0.5);
+  z-index: 1
 }

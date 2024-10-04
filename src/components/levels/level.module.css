@@ -1,0 +1,22 @@
+.legend {
+    display: flex;
+    flex-direction: column;
+    width: 100vw;
+    height: auto;
+}
+.levelTab {
+    justify-self: center;
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: auto;
+
+}
+.level {
+    height: 15px;
+    border: solid black 1px
+}
+.level:hover {
+    opacity: 0.8;
+}
+

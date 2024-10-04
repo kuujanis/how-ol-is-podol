@@ -1,0 +1,25 @@
+{
+"type": "FeatureCollection",
+"name": "raions",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "id": null, "name": "Красная горка" }, "geometry": { "type": "Point", "coordinates": [ 37.543416868311269, 55.44643686097443 ] } },
+{ "type": "Feature", "properties": { "id": null, "name": "Силикатная-2" }, "geometry": { "type": "Point", "coordinates": [ 37.547052118517421, 55.462816060142458 ] } },
+{ "type": "Feature", "properties": { "id": null, "name": "Новосырово" }, "geometry": { "type": "Point", "coordinates": [ 37.5705918, 55.4736689 ] } },
+{ "type": "Feature", "properties": { "id": null, "name": "Цемянка" }, "geometry": { "type": "Point", "coordinates": [ 37.580823707505004, 55.453762213345357 ] } },
+{ "type": "Feature", "properties": { "id": null, "name": "Северный" }, "geometry": { "type": "Point", "coordinates": [ 37.580225756677528, 55.417373072512241 ] } },
+{ "type": "Feature", "properties": { "id": null, "name": "Южный" }, "geometry": { "type": "Point", "coordinates": [ 37.578583497362686, 55.406544461735564 ] } },
+{ "type": "Feature", "properties": { "id": null, "name": "Кутузово" }, "geometry": { "type": "Point", "coordinates": [ 37.570251487710543, 55.396930886126313 ] } },
+{ "type": "Feature", "properties": { "id": null, "name": "Высотный" }, "geometry": { "type": "Point", "coordinates": [ 37.516396611306767, 55.414954223102107 ] } },
+{ "type": "Feature", "properties": { "id": null, "name": "Подольские Просторы" }, "geometry": null },
+{ "type": "Feature", "properties": { "id": null, "name": "Кузнечики" }, "geometry": { "type": "Point", "coordinates": [ 37.478133372911017, 55.419600577517137 ] } },
+{ "type": "Feature", "properties": { "id": null, "name": "Юбилейный" }, "geometry": { "type": "Point", "coordinates": [ 37.487100597156072, 55.428508176610933 ] } },
+{ "type": "Feature", "properties": { "id": null, "name": "Дубровицы" }, "geometry": { "type": "Point", "coordinates": [ 37.478081957897075, 55.439278732393653 ] } },
+{ "type": "Feature", "properties": { "id": null, "name": "Ивановский" }, "geometry": { "type": "Point", "coordinates": [ 37.5242113729972, 55.431353864078879 ] } },
+{ "type": "Feature", "properties": { "id": null, "name": "Зеленовский" }, "geometry": { "type": "Point", "coordinates": [ 37.538975571425375, 55.437272762490814 ] } },
+{ "type": "Feature", "properties": { "id": null, "name": "Центральный" }, "geometry": { "type": "Point", "coordinates": [ 37.550241950906702, 55.429539067564107 ] } },
+{ "type": "Feature", "properties": { "id": null, "name": "Межшоссейный" }, "geometry": { "type": "Point", "coordinates": [ 37.538648523202809, 55.42393652256839 ] } },
+{ "type": "Feature", "properties": { "id": null, "name": "Парковый" }, "geometry": { "type": "Point", "coordinates": [ 37.569998101563357, 55.439667528443941 ] } },
+{ "type": "Feature", "properties": { "id": null, "name": "Шепчинки" }, "geometry": { "type": "Point", "coordinates": [ 37.547772432074623, 55.413362706720839 ] } }
+]
+}

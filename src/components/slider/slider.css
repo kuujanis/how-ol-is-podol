@@ -1,0 +1,82 @@
+.slider-div{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-content: center;
+    vertical-align: middle;
+    width: 100%;
+    height: 60px;
+    background-color: black;
+  }
+  .slider-counter {
+    color: white;
+    padding: 5px 40px;
+    font-size: 2rem;
+  }
+  
+  .horizontal-slider {
+    position: absolute;
+    width: 80vw;
+    height: 40px;
+    overflow: hidden;
+    margin-top: 10px;
+    background-image: repeating-linear-gradient(90deg, 
+    #e51728 0vw, 
+    #e57316 29.3vw, 
+    /* #e5a717 29.3vw,  */
+    #e5a717 37.53vw,
+    /* #e5a717 45.76vw, */
+    /* #e6caa0 45.76vw,  */
+    #e6caa0 49.28vw,
+    /* #e6caa0 52.8vw,  */
+    /* #f3f3f3 52.8vw,  */
+    #f3f3f3 55.95vw,
+    /* #f3f3f3 58.1vw,  */
+    /* #a1e6db 58.1vw,  */
+    #a1e6db 60.2vw, 
+    /* #a1e6db 62.5vw,  */
+    /* #17afe6 62.5vw,  */
+    #17afe6 65.75vw, 
+    /* #17afe6 69vw, */
+    /* #1616e5 69vw,  */
+    #1616e5 72.4vw,
+    /* #1616e5 75.8vw,  */
+    /* #ab17e6 75.8vw,  */
+    #ab17e6 77.9vw, 
+    #ab17e6 80vw
+    );
+  }
+  .slider-thumb {
+    width: 14px;
+    height: 20px;
+    border-radius: 4px;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' fill='%23333' viewBox='0 0 24 24'%3E%3Cpath d='M12,16A2,2 0 0,1 14,18A2,2 0 0,1 12,20A2,2 0 0,1 10,18A2,2 0 0,1 12,16M12,10A2,2 0 0,1 14,12A2,2 0 0,1 12,14A2,2 0 0,1 10,12A2,2 0 0,1 12,10M12,4A2,2 0 0,1 14,6A2,2 0 0,1 12,8A2,2 0 0,1 10,6A2,2 0 0,1 12,4Z' /%3E%3C/svg%3E") #fff;
+    background-repeat: no-repeat;
+    background-position: center;
+    top: 10px;
+  }
+  .horizontal-slider .slider-track {
+    height: 40px;
+  }
+  .slider-track.slider-track-0 {
+    box-shadow: 0 0 0 -9999px rgba(0, 0, 0, 0.7);
+  }
+  .slider-track.slider-track-1 {
+    border-radius: 6px;
+    background: transparent;
+    border: 4px solid #fff;
+    box-sizing: border-box;
+    box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.7);
+  }
+
+  .horizontal-slider .slider-mark{
+    height: 60px;
+    width: 3px;
+    vertical-align: middle;
+    background-color: white;
+  }
+  
+  .slider-mark .slider-mark-0 {
+    background-color: black
+  }
+  
