@@ -1,0 +1,28 @@
+{
+  "files": {
+    "main.css": "/how-ol-is-podol/static/css/main.a9861059.css",
+    "main.js": "/how-ol-is-podol/static/js/main.09000819.js",
+    "static/js/66.6ad80a38.chunk.js": "/how-ol-is-podol/static/js/66.6ad80a38.chunk.js",
+    "static/js/453.58c71e40.chunk.js": "/how-ol-is-podol/static/js/453.58c71e40.chunk.js",
+    "static/media/build1.geojson": "/how-ol-is-podol/static/media/build1.1b1c48c1658bd04d7664.geojson",
+    "static/media/stalin.png": "/how-ol-is-podol/static/media/stalin.b8bd6bd95542a32311aa.png",
+    "static/media/hrushev.png": "/how-ol-is-podol/static/media/hrushev.6e54b1c6c0690cc4748c.png",
+    "static/media/lost1.geojson": "/how-ol-is-podol/static/media/lost1.731f9908fec8bcde21fc.geojson",
+    "static/media/zeroes.png": "/how-ol-is-podol/static/media/zeroes.c4eff30eb1d4e454a793.png",
+    "static/media/zinger.jpg": "/how-ol-is-podol/static/media/zinger.84ee2a2a92ff1a6ff057.jpg",
+    "static/media/postmodern.png": "/how-ol-is-podol/static/media/postmodern.d19c1f645b054b299723.png",
+    "static/media/stagnation.png": "/how-ol-is-podol/static/media/stagnation.b4d6be67f4e02d3c3419.png",
+    "static/media/merchant.jpg": "/how-ol-is-podol/static/media/merchant.2c07f5eea1f707fa0e00.jpg",
+    "static/media/construct.jpg": "/how-ol-is-podol/static/media/construct.c9fedfb7210a04a2b407.jpg",
+    "static/media/raions.geojson": "/how-ol-is-podol/static/media/raions.3f80a16880088fd2f421.geojson",
+    "index.html": "/how-ol-is-podol/index.html",
+    "main.a9861059.css.map": "/how-ol-is-podol/static/css/main.a9861059.css.map",
+    "main.09000819.js.map": "/how-ol-is-podol/static/js/main.09000819.js.map",
+    "66.6ad80a38.chunk.js.map": "/how-ol-is-podol/static/js/66.6ad80a38.chunk.js.map",
+    "453.58c71e40.chunk.js.map": "/how-ol-is-podol/static/js/453.58c71e40.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.a9861059.css",
+    "static/js/main.09000819.js"
+  ]
+}
