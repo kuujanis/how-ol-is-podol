@@ -23,10 +23,7 @@ export const histogram = [
   {color: '#ab17e6', share: 0.30, vw: '7%', number: 584, epoque:[2008, 2024]}
 ]
 
-const fill = ['rgba', 0, 255, 0, 0.5]
 const line = ['rgba', 100, 100, 100, 1]
-const grey = ['rgba', 70, 70, 70, 1]
-const white = ['rgba', 255, 255, 255, 1]
 
 export const selectPolyLayer = {
   id: 'selected-poly',
@@ -82,27 +79,8 @@ export const selectLost = {
   }  
 }
 
-
-const temp3d = {
-  'type': 'fill-extrusion',
-  'minzoom': 9,
-  'paint': {
-      'fill-extrusion-color': {
-        property: 'year_built',
-        type: 'interval',
-        stops: EPOQUES
-      },
-      'fill-extrusion-height': [
-          'interpolate',
-          ['linear'],
-          ['zoom'],
-          9, 0,
-          10, ['*',['get', 'lvl'],5]
-      ]
-  },
-  filter: ['>',['get','year_built'],0]
-}
-const temp2d = {
+export const build2d = {
+  id: 'build2d',
   type: 'fill',
   layout: {},
   paint: {
@@ -111,9 +89,36 @@ const temp2d = {
         type: 'interval',
         stops: EPOQUES
       },
+      'fill-opacity': [
+        'case',
+        ['boolean', ['feature-state', 'hover'], false],
+        1,
+        0.0001
+      ]
   }  
 }
-const tempgrey = {
+export const build3d = {
+    id: 'build3d',
+    'type': 'fill-extrusion',
+    'minzoom': 9,
+    'paint': {
+        'fill-extrusion-color': {
+          property: 'year_built',
+          type: 'interval',
+          stops: EPOQUES
+        },
+        'fill-extrusion-height': [
+            'interpolate',
+            ['linear'],
+            ['zoom'],
+            9, 0,
+            10, ['*',['get', 'lvl'],5]
+        ]
+    },
+    filter: ['>',['get','year_built'],0]
+}
+export const buildGray = {
+  id: 'buildGray',
   type: 'fill',
   layout: {},
   paint: {
@@ -126,33 +131,19 @@ const tempgrey = {
   },
   filter: ['>',['get','year_built'],0]   
 }
-
-export const build3d = {
-    id: 'build3d',
-    ...temp3d
-}
-export const build2d = {
-  id: 'build2d',
-  ...temp2d
+export const lost2d = {
+  ...build2d,
+  id: 'lost2d'
 }
 export const lost3d = {
-  id: 'lost3d',
-  ...temp3d
+  ...build3d,
+  id: 'lost3d'
 }
-export const lost2d = {
-  id: 'lost2d',
-  ...temp2d
-}
-
-export const buildGray = {
-  id: 'buildGray',
-  ...tempgrey
-}
-
 export const lostGray = {
-  id: 'lostGray',
-  ...tempgrey
+  ...buildGray,
+  id: 'lostGray'
 }
+
 
 export const searchLayer = {
   id: 'search',
@@ -179,6 +170,40 @@ export const unsortedLayer = {
   filter: ['<',['get','year_built'],1]
 }
 
+export const circleLayer = {
+  id: 'circle',
+  type: 'fill',
+  layout: {},
+  paint: {
+    'fill-color': 'rgba(150, 150, 150, 0.4)',
+    'fill-opacity': 0.3,
+  }
+}
+export const circleBorderLayer = {
+  id: 'circle-border',
+  type: 'line',
+  paint: {
+    'line-color': 'rgb(255, 255, 255)',
+    'line-width': 3
+  }
+}
+
+export const lensePointLayer = {
+  id: 'lense-point',
+  type: 'circle',
+  paint: {
+    'circle-color': 'white'
+  }
+}
+
+export const lenseLineLayer = {
+  id: 'lense-line',
+  type: 'line',
+  paint: {
+    'line-color': 'rgb(255, 255, 255)',
+    'line-width': 1
+  }
+}
 
 // export const raionLayer = {
 //   id: 'raions',
@@ -205,3 +230,25 @@ export const unsortedLayer = {
 //       'line-width': 3
 //   }  
 // }
+
+export const disabledSettings = {    
+  scrollZoom: false,
+  boxZoom: false,
+  dragRotate: false,
+  dragPan: false,
+  keyboard: false,
+  doubleClickZoom: false,
+  touchZoomRotate: false,
+  touchPitch: false,
+}
+
+export const enabledSettings = {
+  scrollZoom: true,
+  boxZoom: true,
+  dragRotate: false,
+  dragPan: true,
+  keyboard: true,
+  doubleClickZoom: true,
+  touchZoomRotate: true,
+  touchPitch: true,
+}

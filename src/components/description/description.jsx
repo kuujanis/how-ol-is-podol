@@ -1,7 +1,7 @@
 import styles from './description.module.css'
 import React, {useEffect, useState} from 'react'
 import { useInView } from "react-intersection-observer";
-import { histogram } from '../../utils';
+import { enabledSettings, histogram } from '../../utils';
 import { setEpoque, showDescription } from '../../services/slices/map/map-slice';
 import { useDispatch } from 'react-redux';
 
@@ -10,7 +10,7 @@ export const Description = (props) => {
 
     const dispatch = useDispatch()
 
-    const [current,setCurrent] = useState('title');
+    const [current, setCurrent] = useState('title');
 
     const showTab = (tab) => {
         setCurrent(tab);
@@ -72,16 +72,7 @@ export const Description = (props) => {
     const activateMap = () => {
         dispatch(showDescription(false))
         dispatch(setEpoque([1781,2024]))
-        props.setSettings({
-            scrollZoom: true,
-            boxZoom: true,
-            dragRotate: false,
-            dragPan: true,
-            keyboard: true,
-            doubleClickZoom: true,
-            touchZoomRotate: true,
-            touchPitch: true,
-        })
+        props.setSettings(enabledSettings)
         props.mapRef.current?.flyTo({center: [37.55, 55.43], zoom: 12, pitch: 0, bearing: 0, duration: 2000})
     }
 
@@ -114,7 +105,7 @@ export const Description = (props) => {
                         <img className={styles.frontimg} src={require('../../images/merchant.jpg')}/>
                     </div>
                     <p>
-                        Статус города  позвобыл дарован селу Подол Екатериной Великой в 1781 году.
+                        Статус города был дарован селу Подол Екатериной Великой в 1781 году.
                         Он позволил новоиспечённым мещанам активнее заниматься торговлей и ремеслами. 
                         В городе основывались мануфактуры и мелкие заводы, закладывались известняковые шахты.
                         На пожертвования мещан был построен Собор Троицы Живоначальной, открыты первое училище и больница.
@@ -340,9 +331,11 @@ export const Description = (props) => {
                     </div>
                     <p>
                         В 2018 году Подольск наряду с другим спутником Москвы Балашихой вошел в топ-20 самых
-                        быстрорастущих городов европейского континента. В городском округе появляются гигантские 
-                        индустриальные парки и тихие посёлки из таунхаусов. Впервые за долгое время были реализованы 
-                        масштабные проекты по облагораживанию городской среды.
+                        быстрорастущих городов европейского континента. 
+                    </p>
+                    <p>
+                        В начале двадцатых начали реализовываться проекты по ревитализации объектов городской
+                        инфраструктуры: Центрального рынка, ПКиО Талалихина, усадьбы Дубровицы.
                     </p>
                     <h3>Характерные строения:</h3>
                     <ul>

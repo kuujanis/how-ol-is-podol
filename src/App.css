@@ -91,6 +91,11 @@ input {
   right: 12vw;
 }
 
+.lense-button {
+  top: 18vh;
+  right: 20vw;
+}
+
 .dateTab {
   position: absolute;
   display: grid;

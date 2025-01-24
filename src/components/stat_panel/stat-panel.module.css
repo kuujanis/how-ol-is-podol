@@ -1,0 +1,25 @@
+.scrolldiv::-webkit-scrollbar {
+    background-color: #2b2b2b;
+    width: 10px;
+    height: 8px;
+}
+.scrolldiv::-webkit-scrollbar-thumb {
+    background: #000000;
+}
+.scrolldiv {
+    margin: 10px 0;
+    height: 100%;
+    overflow: auto;
+}
+.descolumn {
+    display: flex;
+    flex-direction: column;
+    position:absolute;
+    top: 110px;
+    left: 50px;
+    width: 350px;
+    color: white;
+    background-color: rgba(0, 0, 0, 0.5);
+    height: calc(100vh - 220px);
+    padding: 20px 15px;
+}
